@@ -1,0 +1,92 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.Edit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.CreateMaterial(Name="Borosilicate glass")
+favorites1 = EngData.LoadFavoriteItems()
+library1 = EngData.OpenLibrary(
+    Name="Thermal Materials",
+    Source="Thermal_Materials.xml")
+EngData.EnableFilter(Enable=False)
+matlProp1 = matl1.CreateProperty(
+    Name="Thermal Conductivity",
+    Behavior="Isotropic")
+matlProp1.SetData(
+    Index=-1,
+    Variables=["Thermal Conductivity"],
+    Values=[["1.166 [W m^-1 C^-1]"]])
+matlProp2 = matl1.CreateProperty(Name="Density")
+matlProp2.SetData(
+    Index=-1,
+    Variables=["Density"],
+    Values=[["2230 [kg m^-3]"]])
+matlProp3 = matl1.CreateProperty(Name="Specific Heat")
+matlProp3.SetData(
+    Index=-1,
+    Variables=["Specific Heat"],
+    Values=[["830 [J kg^-1 C^-1]"]])
+matl2 = matl1.Duplicate(TargetContainer=engineeringData1)
+matl2.DisplayName = "Sapphire random"
+matlProp4 = matl2.GetProperty(Name="Density")
+matlProp4.SetData(
+    Variables=["Density"],
+    Values=[["3980 [kg m^-3]"]])
+matlProp5 = matl2.GetProperty(Name="Specific Heat")
+matlProp5.SetData(
+    Variables=["Specific Heat"],
+    Values=[["761 [J kg^-1 C^-1]"]])
+matlProp6 = matl2.GetProperty(Name="Thermal Conductivity")
+matlProp6.SetData(
+    Variables=["Thermal Conductivity"],
+    Values=[["23.93 [W m^-1 C^-1]"]])
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+Save(Overwrite=True)
+Save(Overwrite=True)
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="12 [W m^-2 C^-1]")
+parameter2 = Parameters.GetParameter(Name="P46")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="12 [W m^-2 C^-1]")
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+system2 = GetSystem(Name="APDL")
+setupComponent1 = system2.GetComponent(Name="Setup")
+setupComponent1.Clean()
+system3 = GetSystem(Name="APDL 1")
+setupComponent2 = system3.GetComponent(Name="Setup")
+setupComponent2.Clean()
+system4 = GetSystem(Name="APDL 2")
+setupComponent3 = system4.GetComponent(Name="Setup")
+setupComponent3.Clean()
+system5 = GetSystem(Name="APDL 3")
+setup2 = system5.GetContainer(ComponentName="Setup")
+setup2.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup2.Exit()
+setupComponent4 = system5.GetComponent(Name="Setup")
+setupComponent4.Clean()
+setupComponent1.Refresh()
+setupComponent2.Refresh()
+setupComponent3.Refresh()
+setupComponent3.Clean()
+setupComponent1.Clean()
+setupComponent2.Clean()
+setupComponent3.Clean()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Exit()
+Save(Overwrite=True)

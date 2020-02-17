@@ -1,0 +1,162 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+template1 = GetTemplate(TemplateName="External Data")
+system1 = template1.CreateSystem()
+system1.DisplayText = "bare epoxy volume"
+system2 = GetSystem(Name="SYS 1")
+system2.DisplayText = "test single plane"
+setup1 = system1.GetContainer(ComponentName="Setup")
+externalLoadFileData1 = setup1.AddDataFile(FilePath="C:/Users/gfirest/Desktop/Sheetvolume.csv")
+externalLoadFileDataProperty1 = externalLoadFileData1.GetDataProperty()
+externalLoadColumnData1 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData1,
+    DataType="X Coordinate")
+externalLoadColumnData2 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData 1")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData2,
+    DataType="Y Coordinate")
+externalLoadColumnData3 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData 2")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData3,
+    DataType="Z Coordinate")
+externalLoadColumnData4 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData 3")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData4,
+    DataType="Heat Generation")
+externalLoadColumnData4.Unit = "W mm^-3"
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Update(AllDependencies=True)
+system3 = GetSystem(Name="SYS")
+setupComponent2 = system3.GetComponent(Name="Setup")
+setupComponent1.TransferData(TargetComponent=setupComponent2)
+modelComponent1 = system3.GetComponent(Name="Model")
+modelComponent1.Refresh()
+setupComponent2.Refresh()
+setup2 = system3.GetContainer(ComponentName="Setup")
+setup2.Edit()
+resultsComponent1 = system3.GetComponent(Name="Results")
+resultsComponent1.Update(AllDependencies=True)
+variable1 = Graphics.GetVariable(Name="Param Summary_11_P7")
+variable1.BoundsMax = 0
+variable2 = Graphics.GetVariable(Name="Param Summary_12_P4")
+variable2.BoundsMax = 55
+variable3 = Graphics.GetVariable(Name="Param Summary_13_P5")
+variable3.BoundsMin = 0
+variable3.BoundsMax = 93.7651
+template2 = GetTemplate(TemplateName="Results")
+system4 = template2.CreateSystem()
+results1 = system4.GetContainer(ComponentName="Results")
+results1.Edit()
+results1.Exit()
+resultsComponent2 = system4.GetComponent(Name="Results")
+resultsComponent2.RemoveFromSystem(System=system4)
+resultsComponent2.Clean()
+resultsComponent2.RemoveFromSystem(System=system4)
+template3 = GetTemplate(TemplateName="CFX")
+system5 = template3.ReplaceSystem(System=system4)
+system5.Delete()
+template4 = GetTemplate(
+    TemplateName="Design Assessment",
+    Solver="ANSYS")
+system6 = template4.CreateSystem()
+schematicSettings1 = GetSchematicSettings()
+schematicSettings1.WireBundling = True
+schematicSettings1.WireBundling = False
+system6.Delete()
+Save(Overwrite=True)
+variable4 = Graphics.GetVariable(Name="Param Summary_18_P12")
+variable4.BoundsMin = 0
+variable4.BoundsMax = 207.304
+variable5 = Graphics.GetVariable(Name="Param Summary_19_P13")
+variable5.BoundsMin = 0
+variable5.BoundsMax = 154.905
+variable6 = Graphics.GetVariable(Name="Param Summary_20_P14")
+variable6.BoundsMin = 0
+variable6.BoundsMax = 106.136
+variable7 = Graphics.GetVariable(Name="Param Summary_21_P15")
+variable7.BoundsMin = 0
+variable7.BoundsMax = 85.543
+variable8 = Graphics.GetVariable(Name="Param Summary_12_P4")
+variable8.BoundsMin = -5
+variable8.BoundsMax = 30
+variable9 = Graphics.GetVariable(Name="Param Summary_13_P5")
+variable9.BoundsMin = -1
+variable9.BoundsMax = 1
+variable10 = Graphics.GetVariable(Name="Param Summary_14_P8")
+variable10.BoundsMin = -1
+variable10.BoundsMax = 1
+variable11 = Graphics.GetVariable(Name="Param Summary_15_P9")
+variable11.BoundsMin = -1
+variable11.BoundsMax = 1
+variable12 = Graphics.GetVariable(Name="Param Summary_16_P10")
+variable12.BoundsMin = -1
+variable12.BoundsMax = 1
+variable13 = Graphics.GetVariable(Name="Param Summary_17_P11")
+variable13.BoundsMin = -1
+variable13.BoundsMax = 1
+variable4.BoundsMin = -1
+variable4.BoundsMax = 1
+variable5.BoundsMin = -1
+variable5.BoundsMax = 1
+variable6.BoundsMin = -1
+variable6.BoundsMax = 1
+variable7.BoundsMin = -1
+variable7.BoundsMax = 1
+variable14 = Graphics.GetVariable(Name="Param Summary_9_P3")
+variable14.BoundsMin = 4
+variable14.BoundsMax = 26
+variable15 = Graphics.GetVariable(Name="Param Summary_7_P2")
+variable15.BoundsMax = 22
+variable16 = Graphics.GetVariable(Name="Param Summary_8_P1")
+variable16.BoundsMax = 3
+variable17 = Graphics.GetVariable(Name="Param Summary_11_P7")
+variable17.BoundsMin = -1
+variable17.BoundsMax = 0
+variable18 = Graphics.GetVariable(Name="Param Summary_10_P6")
+variable18.BoundsMax = 1
+variable19 = Graphics.GetVariable(Name="Param Summary_12_P16")
+variable19.BoundsMin = -1
+variable19.BoundsMax = 1
+variable20 = Graphics.GetVariable(Name="Param Summary_13_P4")
+variable20.BoundsMin = -5
+variable20.BoundsMax = 30
+variable21 = Graphics.GetVariable(Name="Param Summary_14_P5")
+variable21.BoundsMin = -1
+variable21.BoundsMax = 1
+variable22 = Graphics.GetVariable(Name="Param Summary_15_P8")
+variable22.BoundsMin = -1
+variable22.BoundsMax = 1
+variable23 = Graphics.GetVariable(Name="Param Summary_18_P11")
+variable23.BoundsMin = -1
+variable23.BoundsMax = 1
+variable24 = Graphics.GetVariable(Name="Param Summary_16_P9")
+variable24.BoundsMin = -1
+variable24.BoundsMax = 1
+variable25 = Graphics.GetVariable(Name="Param Summary_17_P10")
+variable25.BoundsMin = -1
+variable25.BoundsMax = 1
+variable26 = Graphics.GetVariable(Name="Param Summary_20_P13")
+variable26.BoundsMin = -1
+variable26.BoundsMax = 1
+variable27 = Graphics.GetVariable(Name="Param Summary_19_P12")
+variable27.BoundsMin = -1
+variable27.BoundsMax = 1
+variable28 = Graphics.GetVariable(Name="Param Summary_21_P14")
+variable28.BoundsMin = -1
+variable28.BoundsMax = 1
+variable29 = Graphics.GetVariable(Name="Param Summary_22_P15")
+variable29.BoundsMin = -1
+variable29.BoundsMax = 1
+variable19.BoundsMin = 0
+variable19.BoundsMax = 2
+model1 = system3.GetContainer(ComponentName="Model")
+model1.Edit()
+model1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1.Exit()
+Save(Overwrite=True)
+ClearMessages()
+Save(Overwrite=True)

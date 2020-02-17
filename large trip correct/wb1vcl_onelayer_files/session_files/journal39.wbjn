@@ -1,0 +1,123 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.Edit()
+results1 = system1.GetContainer(ComponentName="Results")
+results1.Edit()
+parameter1 = Parameters.GetParameter(Name="P49")
+parameter1.Description = "Gaussian Width of spot, same as  setup ARG4"
+parameter1.Description = "Gaussian Width of spot, same as  setup ARG6"
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="0.0002")
+designPoint2 = Parameters.GetDesignPoint(Name="1")
+designPoint2.Delete()
+designPoint3 = Parameters.GetDesignPoint(Name="2")
+designPoint3.Delete()
+designPoint4 = Parameters.GetDesignPoint(Name="3")
+designPoint4.Delete()
+designPoint5 = Parameters.GetDesignPoint(Name="4")
+designPoint5.Delete()
+designPoint6 = Parameters.GetDesignPoint(Name="5")
+designPoint6.Delete()
+designPoint7 = Parameters.GetDesignPoint(Name="6")
+designPoint7.Delete()
+designPoint8 = Parameters.GetDesignPoint(Name="7")
+designPoint8.Delete()
+designPoint9 = Parameters.GetDesignPoint(Name="8")
+designPoint9.Delete()
+designPoint10 = Parameters.GetDesignPoint(Name="9")
+designPoint10.Delete()
+designPoint11 = Parameters.GetDesignPoint(Name="10")
+designPoint11.Delete()
+designPoint12 = Parameters.GetDesignPoint(Name="11")
+designPoint12.Delete()
+designPoint13 = Parameters.GetDesignPoint(Name="12")
+designPoint13.Delete()
+designPoint14 = Parameters.GetDesignPoint(Name="13")
+designPoint14.Delete()
+designPoint15 = Parameters.GetDesignPoint(Name="14")
+designPoint15.Delete()
+designPoint16 = Parameters.GetDesignPoint(Name="15")
+designPoint16.Delete()
+designPoint17 = Parameters.GetDesignPoint(Name="21")
+designPoint17.Delete()
+designPoint18 = Parameters.GetDesignPoint(Name="16")
+designPoint18.Delete()
+designPoint19 = Parameters.GetDesignPoint(Name="20")
+designPoint19.Delete()
+designPoint20 = Parameters.GetDesignPoint(Name="19")
+designPoint20.Delete()
+designPoint21 = Parameters.GetDesignPoint(Name="18")
+designPoint21.Delete()
+designPoint22 = Parameters.GetDesignPoint(Name="17")
+designPoint22.Delete()
+parameter2 = Parameters.GetParameter(Name="P50")
+parameter2.Description = "The convectice coefficient off the faces"
+parameter3 = Parameters.GetParameter(Name="P51")
+parameter3.DisplayText = "line data Commands (APDL) 3 ARG8 inBeta"
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="1052")
+parameter3.Description = "beta defines the falloff of intensity through the slab"
+parameter4 = Parameters.GetParameter(Name="P52")
+parameter4.DisplayText = "line data Commands (APDL) 3 ARG7 "
+parameter4.DisplayText = "inAbsPow"
+parameter4.DisplayText = "line data Commands (APDL) 3 ARG8 inBeta"
+parameter4.DisplayText = "line data Commands (APDL) 3 ARG7"
+parameter4.DisplayText = "line data Commands (APDL) 3 ARG7 "
+parameter4.DisplayText = "inAbsPow"
+parameter4.DisplayText = "line data Commands (APDL) 3 ARG8 inBeta"
+parameter4.DisplayText = "line data Commands (APDL) 3 ARG7 inAbsPow"
+parameter5 = Parameters.GetParameter(Name="P53")
+parameter5.DisplayText = "line data Commands (APDL) 3 ARG6 inScatRat"
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="p38")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="P38")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="P37")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="P41")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="P43")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="12")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="P35")
+parameter6 = Parameters.GetParameter(Name="P46")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="P2/1000")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="0.022")
+parameter7 = Parameters.GetParameter(Name="P42")
+designPoint1.SetParameterExpression(
+    Parameter=parameter7,
+    Expression="P40")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="P36")
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)

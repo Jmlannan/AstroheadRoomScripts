@@ -1,0 +1,27 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+designPoint1 = Parameters.GetDesignPoint(Name="20")
+designPoint2 = designPoint1.Duplicate()
+parameter1 = Parameters.GetParameter(Name="P38")
+designPoint2.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="0.5")
+parameter2 = Parameters.GetParameter(Name="P43")
+designPoint2.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="11 [W m^-2 C^-1]")
+parameter3 = Parameters.GetParameter(Name="P45")
+designPoint2.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="11 [W m^-2 C^-1]")
+parameter4 = Parameters.GetParameter(Name="P48")
+designPoint2.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="11")
+designPoint2.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="0.35")
+Parameters.OptimizeUpdateOrder()
+backgroundSession1 = UpdateAllDesignPoints(DesignPoints=[designPoint2, designPoint1])
+Save(Overwrite=True)

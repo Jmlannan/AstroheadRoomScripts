@@ -1,0 +1,28 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+Update()
+system1 = GetSystem(Name="APDL")
+system2 = system1.Duplicate(RelativeTo=system1)
+system2.DisplayText = "Top layer mech APDL"
+system3 = system2.Duplicate(RelativeTo=system2)
+system3.DisplayText = "Bot layer mech APDL"
+system1.DisplayText = "Sense layer mech APDL"
+setup1 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile1.Delete()
+mapdlInputFile2 = setup1.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile2.Delete()
+setup2 = system3.GetContainer(ComponentName="Setup")
+mapdlInputFile3 = setup2.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile3.Delete()
+mapdlInputFile4 = setup2.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile4.Delete()
+mapdlInputFile5 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One layer/wb1vcl_onelayer_files/dp0/SYS/MECH/ds.dat")
+mapdlInputFile6 = setup2.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One layer/wb1vcl_onelayer_files/dp0/SYS/MECH/ds.dat")
+mapdlInputFile7 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One layer/wb1vcl_onelayer_files/outpathTAtop.mac")
+mapdlInputFile8 = setup2.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One layer/wb1vcl_onelayer_files/outpathTAbot.mac")
+setupComponent1 = system2.GetComponent(Name="Setup")
+setupComponent1.UpdateUpstreamComponents()
+setupComponent1.Update(AllDependencies=True)
+Save(Overwrite=True)

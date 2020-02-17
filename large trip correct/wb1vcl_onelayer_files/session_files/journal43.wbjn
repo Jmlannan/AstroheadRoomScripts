@@ -1,0 +1,76 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+solution1 = system1.GetContainer(ComponentName="Solution")
+solution1.Edit()
+system2 = GetSystem(Name="APDL")
+setupComponent1 = system2.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+Update()
+Save(Overwrite=True)
+Save(Overwrite=True)
+setup1 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/dp0/SYS/MECH/ds.dat")
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+template1 = GetTemplate(
+    TemplateName="Steady-State Thermal",
+    Solver="ANSYS")
+engineeringDataComponent1 = system1.GetComponent(Name="Engineering Data")
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+modelComponent1 = system1.GetComponent(Name="Model")
+solutionComponent1 = system1.GetComponent(Name="Solution")
+componentTemplate1 = GetComponentTemplate(Name="SimulationSetupCellTemplate_ThermalSteadyStateANSYS")
+system3 = template1.CreateSystem(
+    ComponentsToShare=[engineeringDataComponent1, geometryComponent1, modelComponent1],
+    DataTransferFrom=[Set(FromComponent=solutionComponent1, TransferName=None, ToComponentTemplate=componentTemplate1)],
+    Position="Below",
+    RelativeTo=system2)
+system3.Delete()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=False)
+setupComponent1.Update(AllDependencies=True)
+solution1.Edit()
+setup1.Exit()
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+mapdlInputFile2 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/dp0/SYS/MECH/outpathTA.mac")
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=False)
+setup1.Exit()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=False)
+setup1.Exit()
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=False)
+setupComponent1.Update(AllDependencies=True)
+system2.Update(AllDependencies=True)
+setup1.Exit()
+system2.Update(AllDependencies=True)
+Save(Overwrite=True)

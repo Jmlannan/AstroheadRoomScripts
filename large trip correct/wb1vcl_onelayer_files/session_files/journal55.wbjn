@@ -1,0 +1,46 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P1")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="1.53 [mm]")
+parameter2 = Parameters.GetParameter(Name="P37")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="0.04682")
+parameter3 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="15 [W m^-2 C^-1]")
+parameter4 = Parameters.GetParameter(Name="P46")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="15 [W m^-2 C^-1]")
+system1 = GetSystem(Name="SYS")
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1.Exit()
+system2 = GetSystem(Name="APDL")
+setup1 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile1.Delete()
+mapdlInputFile2 = setup1.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile2.Delete()
+system3 = GetSystem(Name="APDL 1")
+setup2 = system3.GetContainer(ComponentName="Setup")
+mapdlInputFile3 = setup2.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile3.Delete()
+mapdlInputFile4 = setup2.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile4.Delete()
+system4 = GetSystem(Name="APDL 2")
+setup3 = system4.GetContainer(ComponentName="Setup")
+mapdlInputFile5 = setup3.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile5.Delete()
+mapdlInputFile6 = setup3.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile6.Delete()
+Save(Overwrite=True)

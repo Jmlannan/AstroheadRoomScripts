@@ -1,0 +1,234 @@
+
+RESUME
+/POST1
+!SET,LAST, , , , , , 
+!PLIST, ALL			! JK we need to work with Paths not Lines, and PLIST doesnt seem to exist
+Allsel				! reset the selection to all items
+
+
+!variables we need to name the file for export, for now we just use a time stamp, and put all paramters IN the file
+*GET, mTime, ACTIVE, 0, TIME, WALL
+mPar1 =	0.022		!ARG3			! radius of the disc
+mPar2 = 0.00153		!ARG4			! thickness of total Assembly
+mPar3 = 12  		!ARG5			! The convectice coefficient off the faces
+mPar4 = 0.32  		!ARG6		!inScatRat		! the scattering ratio to adjust the input power
+mPar5 = .04682  	!ARG7		!inAbsPow		! the input power * the extinction ( assumes all ext is abs, scat vs abs is adjusted w/ inScatRat
+mPar6 = 1052  		!ARG8		!inBeta		! beta defines the falloff of intensity through the slab
+mPar7 = .00105  	!ARG2		!inThick		! the thickness of the sense slab
+mPar8 = 0.0002		!ARG9		!inWidth		! the gaussian width of the spot
+inPeryB = 1052		!ARG1
+!TEMPORARY-----------------	! to test how varied B changes results
+inPeryB2 = inPeryB*2		!
+inPeryB3 = inPeryB*0.5	!
+inPeryB4 = inPeryB*0.01	!
+!ENDTEMP-------------------	!
+
+
+!define a couplt variables for the main path
+mTop = mPar1
+mBot = -mPar1
+mDivs = NINT((mTop-mBot)/0.0001)		! number of subdivisions between pts 
+mPts = 2				! number of points (basically always 2)
+mSum = mDivs*(mPts-1)+1		! the number we have to iterate over
+
+!Define the main path (aka, across the width of the thing)
+PATH, mPath, mPts,,mDivs			!PATH, NAME, nPts, nSets, nDiv	!Define path attributes using the PATH command
+PPATH, 1, , -mPar1, 0.000, 0.00,		!PPATH, POINT, NODE, X, Y, Z, CS	!Define the points of the path using the PPATH command
+PPATH, 2, , mPar1,  0.000, 0.00,							!define the Points on a PATH, one at a time,
+PDEF, mPathT, TEMP, , AVG			!PDEF, Lab, Item, Comp, Avglab	!Map the desired quantity on to the path using the PDEF command
+
+! transfer this path data onto a set of arrays we can mess with, mostly we want mPathTa, which has all the interpolation pts in it
+PAGET, mPathPt, POINTS			! writes current path to array object 
+PAGET, mPathTa, TABLE
+PAGET, mPathLa, LABEL
+
+!TEMPORARY define an overarching file to print... basically everythign into
+*DIM,mfilnam0,STRING,80 
+!mfilnam0(1) = STRCAT( CHRVAL(NINT(mTime*1000)),'_SUBPathTa') ! for when connection is spotty
+mfilnam0(1) = STRCAT('\\tsclient\E\GlassSlide\',STRCAT( CHRVAL(NINT(mTime*1000)),'_SUBPathTa'))
+*CFOPEN, %mfilnam0(1)%,csv
+*VWRITE, 1
+X, Y, Z, S, ????, TEMP, normalization factor, mExpon, individual scaler, Scaled Temp, Accumulator for mWTempp, mWtTemp at Beta, mWtTemp 2*beta, mWtTemp 1/2*beta, mWtTemp 0.01*beta, %e
+*VWRITE, mPar1, mPar2, mPar3, mPar4, mPar5
+Disc Radius: %e m, Disc Thickness: %e m, H on Faces: %e W/m^2K, Absorbtion/Extinction Ratio: %e, Power Extincted in Disc: %e W, 
+*VWRITE, mPar6, mPar7, mPar8, inPeryB
+Beta at Heater Wavelength: %e OD/m, Thickness of disc: %e m, Heating Beam Gaussian Width: %e m, Beta at Thermo Wavelength: %e OD/m,
+!endTEMPORARY
+
+!now we start the sublooping bananas shit
+*DO,i,1,mSum
+mXLoc = mPathTa(i,1)
+mYLoc = mPathTa(i,2)
+
+!set up some variables for the SUBpath math
+!inThick = ARG2  
+!mSTop = mPar2		! top of assembly
+!mSBot = mPar7/2  	! bot of top-cladding
+!mSTop = mPar7/2		! top of sense layer
+!mSBot = -1*(mPar7/2)	! bot of sense layer
+mSTop = -1*(mPar7/2)	! top of bot-cladding
+mSBot = -1*mPar2	! bottom of assembly
+
+mSDivs = NINT(mPar7/.00001)			! number of subdivisions between pts 
+mSPts = 2			! number of points (basically always 2)
+mSSum = mSDivs*(mSPts-1)+1	! the number we have to iterate over
+	
+!define the SUBpath
+PATH, mSPath, mSPts,,mSDivs			!PATH, NAME, nPts, nSets, nDiv	!Define path attributes using the PATH command
+PPATH, 1, , mXLoc, mYLoc, mSTop,		!PPATH, POINT, NODE, X, Y, Z, CS	!Define the points of the path using the PPATH command
+PPATH, 2, , mXLoc, mYLoc, mSBot,						!define the Points on a PATH, one at a time,
+PDEF, mSPathT, TEMP, , AVG			!PDEF, Lab, Item, Comp, Avglab	!Map the desired quantity on to the path using the PDEF command
+
+!transfer the SUBpath onto an array where we can mess with it
+PAGET, mSPathPt, POINTS			! writes current path to array object 
+PAGET, mSPathTa, TABLE
+PAGET, mSPathLa, LABEL
+
+!here is the loop to get the scale factor
+mScaler = 0
+!TEMPORARY-----------------	! for Beta test
+mScaler2 = 0			!
+mScaler3 = 0			!
+mScaler4 = 0			! 
+!ENDTEMPORARY--------------	!
+*DO,j,1,mSSum
+	mScaler = mScaler + EXP((mSPathTa(j,3)-(mPar7/2))*inPeryB)
+	!TEMPORARY-----------------------------------------------------------------	! for Beta test
+	mScaler2 = mScaler2 + EXP((mSPathTa(j,3)-(mPar7/2))*inPeryB2)		!
+	mScaler3 = mScaler3 + EXP((mSPathTa(j,3)-(mPar7/2))*inPeryB3)		!
+	mScaler4 = mScaler4 + EXP((mSPathTa(j,3)-(mPar7/2))*inPeryB4)		!
+	!ENDTEMPORARY--------------------------------------------------------------	!
+*ENDDO
+
+!here is the loop to get the weighted "average" temperature
+mWtTemp = 0
+!TEMPORARY-----------------	! for Beta test
+mWtTemp2 = 0			!
+mWtTemp3 = 0			!
+mWtTemp4 = 0			!
+!ENDTEMPORARY--------------	!
+VAR11 = 0
+*DO,j,1,mSSum
+	mWtTemp = mWtTemp + mSPathTa(j,5)*EXP((mSPathTa(j,3)-mPar7/2)*inPeryB)/mScaler
+	!TEMPORARY-------------------------------------------------------------------------------------	! for Beta test
+	mWtTemp2 = mWtTemp2 + mSPathTa(j,5)*EXP((mSPathTa(j,3)-mPar7/2)*inPeryB2)/mScaler2		!
+	mWtTemp3 = mWtTemp3 + mSPathTa(j,5)*EXP((mSPathTa(j,3)-mPar7/2)*inPeryB3)/mScaler3		!
+	mWtTemp4 = mWtTemp4 + mSPathTa(j,5)*EXP((mSPathTa(j,3)-mPar7/2)*inPeryB4)/mScaler4		!
+	!ENDTEMPORARY----------------------------------------------------------------------------------	!
+	mExpon = EXP((mSPathTa(j,3)-mPar7/2)*inPeryB)
+	tmp1 = mSPathTa(j,1)
+	tmp2 = mSPathTa(j,2)
+	tmp3 = mSPathTa(j,3)
+	tmp4 = mSPathTa(j,4)
+	tmp5 = mSPathTa(j,5)
+	tmp6 = mSPathTa(j,6)
+	VAR9 = EXP((mSPathTa(j,3)-mPar7/2)*inPeryB)/mScaler
+	VAR10 = mSPathTa(j,5)*EXP((mSPathTa(j,3)-mPar7/2)*inPeryB)/mScaler
+	VAR11 = VAR11+VAR10
+	*VWRITE, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, mScaler, mExpon, VAR9, VAR10, VAR11, mWtTemp, mWtTemp2, mWtTemp3, mWtTemp4,
+%e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e 
+*ENDDO
+
+!now we need to get rid of the path we just made
+PADELE, mSPath
+*DEL,mSPathPt
+*DEL,mSPathTa
+*DEL,mSPathLa
+
+!all that just to get this number
+mPathTa(i,7) = mWtTemp
+!TEMPORARY------------------------	! for Beta test
+mPathTa(i,8) = mWtTemp2		!
+mPathTa(i,9) = mWtTemp3		!
+mPathTa(i,10) = mWtTemp4		!
+!ENDTEMPORARY---------------------	!
+
+
+!now end this super loop and close the file
+*ENDDO
+!TEMPORARY
+*CFCLOSE
+!END TEMPORARY
+
+
+
+!print all the rweighted results back into one file
+*DIM,mfilnam0,STRING,80
+!mfilnam0(1) = STRCAT( CHRVAL(NINT(mTime*1000)),'_PathTa') ! for when you have spotty connection, still risky though
+mfilnam0(1) = STRCAT('\\tsclient\E\GlassSlide\',STRCAT( CHRVAL(NINT(mTime*1000)),'_PathTa'))
+*CFOPEN, %mfilnam0(1)%,csv
+*DO,i,1,mSum
+	tmp1 = mPathTa(i,1)
+	tmp2 = mPathTa(i,2)
+	tmp3 = mPathTa(i,3)
+	tmp4 = mPathTa(i,4)
+	tmp5 = mPathTa(i,5)
+	tmp6 = mPathTa(i,6)
+	tmp7 = mPathTa(i,7)
+	!TEMPORARY------------------------	! for Beta test
+	tmp8 = mPathTa(i,8)			!
+	tmp9 = mPathTa(i,9)			!
+	tmp10 = mPathTa(i,10)		!
+	!ENDTEMPORARY---------------------	!
+
+	*VWRITE, tmp1, tmp2, tmp3,tmp4, tmp5, tmp6, tmp7, tmp8, tmp9, tmp10 
+%e, %e, %e, %e, %e, %e, %e, %e, %e, %e 
+*ENDDO
+*CFCLOSE
+!endTEMPORARY
+
+
+
+
+
+
+
+
+!optionally, write the path arrays to a file
+!*DIM,mfilnam0,STRING,80
+!mfilname = STRCAT( CHRVAL(inabspow),'post_run_PathPt')
+!*CFOPEN, %mfilname%,csv
+!*VWRITE, mPathPt(1,1), mPathPt(1,2), mPathPt(1,3), mPathPt(1,4), mPathPt(1,5)
+!%e, %e, %e, %e, %e, 
+!*CFCLOSE
+
+!*DIM,mfilnam0,STRING,80
+!mfilname = STRCAT( CHRVAL(mTime),'post_run_PathTa')
+!*CFOPEN, %mfilname%,csv
+!VAR13 = 0
+!*DO,i,1,mSum
+!	VAR1 = mPathTa(i,1)
+!	VAR2 = mPathTa(i,2)
+!	VAR3 = mPathTa(i,3)
+!	VAR4 = mPathTa(i,4)
+!	VAR5 = mPathTa(i,5)
+!	VAR6 = mPathTa(i,6)
+!	VAR7 = mPathTa(i,3)+mPathTa(i,3)
+!	VAR8 = mScaler
+!	VAR9 = (mPathTa(i,3)-mPar7/2)*inPeryB
+!	VAR10 = EXP((mPathTa(i,3)-mPar7/2)*inPeryB)
+!	VAR11 = EXP((mPathTa(i,3)-mPar7/2)*inPeryB)/mScaler
+!	VAR12 = mPathTa(i,5)*EXP((mPathTa(i,3)-mPar7/2)*inPeryB)/mScaler
+!	VAR13 = VAR13+VAR12
+!	VAR14 = 2*i
+!	VAR15 = i**2
+!	VAR16 = 0
+!	VAR17 = 1
+!	*VWRITE, VAR1, VAR2, VAR3, VAR4, VAR5, VAR6, VAR7, VAR8, VAR9, VAR10, VAR11, VAR12, VAR13, VAR14, VAR15, VAR16, VAR17
+!%e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e, %e 
+!*ENDDO
+!*CFCLOSE
+
+!*DIM,mfilnam0,STRING,80
+!mfilname = STRCAT( CHRVAL(inabspow),'post_run_PathLa') 
+!*CFOPEN, %mfilname%,csv
+!*VWRITE, mPathLa(1)
+!%s, 
+!*CFCLOSE
+
+
+!
+!*DO,i,1,10
+!*ENDDO
+!Allsel				! reset the selection to all items
+	

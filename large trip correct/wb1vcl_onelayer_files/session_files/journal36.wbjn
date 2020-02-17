@@ -1,0 +1,54 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P6")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="0.525 [mm]")
+parameter2 = Parameters.GetParameter(Name="P7")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="-0.525 [mm]")
+parameter3 = Parameters.GetParameter(Name="P39")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="-0.000525")
+parameter4 = Parameters.GetParameter(Name="P40")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="0.00105")
+parameter5 = Parameters.GetParameter(Name="P42")
+designPoint1.SetParameterExpression(
+    Parameter=parameter5,
+    Expression="0.00105")
+parameter6 = Parameters.GetParameter(Name="P43")
+designPoint1.SetParameterExpression(
+    Parameter=parameter6,
+    Expression="12 [W m^-2 C^-1]")
+parameter7 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter7,
+    Expression="12 [W m^-2 C^-1]")
+parameter8 = Parameters.GetParameter(Name="P48")
+designPoint1.SetParameterExpression(
+    Parameter=parameter8,
+    Expression="12")
+system1 = GetSystem(Name="SYS")
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+geometry1.Refresh()
+geometry1.Exit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1.Exit()
+Save(Overwrite=True)
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Update(AllDependencies=True)
+solutionComponent1 = system1.GetComponent(Name="Solution")
+solutionComponent1.Update(AllDependencies=True)
+Save(Overwrite=True)

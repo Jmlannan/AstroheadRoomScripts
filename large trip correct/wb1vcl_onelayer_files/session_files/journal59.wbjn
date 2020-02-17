@@ -1,0 +1,38 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="25 [W m^-2 C^-1]")
+parameter2 = Parameters.GetParameter(Name="P46")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="25 [W m^-2 C^-1]")
+Refresh()
+system1 = GetSystem(Name="APDL")
+setup1 = system1.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile1.Delete()
+system2 = GetSystem(Name="APDL 1")
+setup2 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile2 = setup2.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile2.Delete()
+system3 = GetSystem(Name="APDL 2")
+setup3 = system3.GetContainer(ComponentName="Setup")
+mapdlInputFile3 = setup3.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile3.Delete()
+mapdlInputFile4 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTAmid.mac")
+mapdlInputFile5 = setup2.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTAtop.mac")
+mapdlInputFile6 = setup3.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTAbot.mac")
+system4 = GetSystem(Name="SYS")
+setup4 = system4.GetContainer(ComponentName="Setup")
+setup4.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1 = system4.GetContainer(ComponentName="Model")
+model1.Exit()
+Save(Overwrite=True)

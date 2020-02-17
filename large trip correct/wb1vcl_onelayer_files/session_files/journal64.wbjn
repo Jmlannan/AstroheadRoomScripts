@@ -1,0 +1,70 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="APDL 1")
+setup1 = system1.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile1.Delete()
+system2 = GetSystem(Name="APDL 2")
+setup2 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile2 = setup2.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile2.Delete()
+system3 = GetSystem(Name="APDL")
+setup3 = system3.GetContainer(ComponentName="Setup")
+mapdlInputFile3 = setup3.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile3.Delete()
+mapdlInputFile4 = setup3.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTAmid.mac")
+system4 = GetSystem(Name="SYS")
+engineeringData1 = system4.GetContainer(ComponentName="Engineering Data")
+material1 = engineeringData1.GetMaterial(Name="Borosilicate glass")
+matl1 = material1.Duplicate(TargetContainer=engineeringData1)
+matl1.DisplayName = "Fake Material"
+matlProp1 = matl1.GetProperty(Name="Thermal Conductivity")
+matlProp1.SetData(
+    Variables=["Thermal Conductivity"],
+    Values=[["0.001 [W m^-1 C^-1]"]])
+materialPropertyData1 = matlProp1.GetPropertyData(
+    Name="Thermal Conductivity",
+    Qualifiers={"Behavior": "Isotropic"})
+materialVariable1 = materialPropertyData1.GetVariable(Name="Thermal Conductivity")
+parameter1 = Parameters.CreateParameter(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue",
+    DisplayText="Thermal Conductivity")
+parameter1.ValueQuantityName = "Thermal Conductivity"
+modelComponent1 = system4.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system4.GetContainer(ComponentName="Model")
+model1.Edit()
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter2 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="12 [W m^-2 C^-1]")
+parameter3 = Parameters.GetParameter(Name="P46")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="12 [W m^-2 C^-1]")
+parameter4 = Parameters.GetParameter(Name="P38")
+designPoint1.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="0.1")
+mapdlInputFile4.Delete()
+mapdlInputFile5 = setup3.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTAmid.mac")
+setupComponent1 = system4.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+Update()
+Save(Overwrite=True)
+Save(Overwrite=True)
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="0.01 [W m^-1 C^-1]")
+Refresh()
+Save(Overwrite=True)
+solutionComponent1 = system4.GetComponent(Name="Solution")
+solutionComponent1.Clean()
+resultsComponent1 = system4.GetComponent(Name="Results")
+resultsComponent1.Clean()
+Refresh()
+Refresh()
+Save(Overwrite=True)

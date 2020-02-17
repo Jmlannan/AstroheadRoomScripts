@@ -1,0 +1,36 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+solution1 = system1.GetContainer(ComponentName="Solution")
+solution1.Edit()
+system2 = GetSystem(Name="APDL")
+system3 = system2.Duplicate(RelativeTo=system2)
+system3.DisplayText = "Testing"
+setup1 = system3.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTAtest.mac")
+mapdlInputFile2 = setup1.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile2.Delete()
+system3.Update(AllDependencies=True)
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P38")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="0.32")
+parameter2 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="12 [W m^-2 C^-1]")
+parameter3 = Parameters.GetParameter(Name="P46")
+designPoint1.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="12 [W m^-2 C^-1]")
+Save(Overwrite=True)
+Save(Overwrite=True)
+setupComponent1 = system3.GetComponent(Name="Setup")
+setupComponent1.Update(AllDependencies=True)
+setupComponent2 = system2.GetComponent(Name="Setup")
+setupComponent2.Update(AllDependencies=True)
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Exit()
+Save(Overwrite=True)

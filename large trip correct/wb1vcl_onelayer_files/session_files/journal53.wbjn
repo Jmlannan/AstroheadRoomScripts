@@ -1,0 +1,18 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="APDL")
+setup1 = system1.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile1.PublishMapdlParameter(Name="MPAR1")
+mapdlInputFile1.UnpublishMapdlParameter(Name="MPAR1")
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+system2 = GetSystem(Name="SYS")
+setup2 = system2.GetContainer(ComponentName="Setup")
+setup2.Edit()
+Refresh()
+Refresh()
+Refresh()
+Update()
+Save(Overwrite=True)

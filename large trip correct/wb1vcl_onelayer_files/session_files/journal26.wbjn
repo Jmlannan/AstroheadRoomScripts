@@ -1,0 +1,55 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Exit()
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+designPoint2 = designPoint1.Duplicate()
+designPoint2.Retained = False
+designPoint3 = designPoint2.Duplicate()
+parameter1 = Parameters.GetParameter(Name="P43")
+designPoint2.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="15 [W m^-2 C^-1]")
+designPoint3.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="5 [W m^-2 C^-1]")
+parameter2 = Parameters.GetParameter(Name="P45")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="25 [W m^-2 C^-1]")
+designPoint2.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="15 [W m^-2 C^-1]")
+designPoint3.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="5 [W m^-2 C^-1]")
+parameter3 = Parameters.GetParameter(Name="P48")
+designPoint2.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="15")
+designPoint3.SetParameterExpression(
+    Parameter=parameter3,
+    Expression="5")
+designPoint4 = designPoint1.Duplicate()
+designPoint5 = designPoint2.Duplicate()
+designPoint6 = designPoint3.Duplicate()
+parameter4 = Parameters.GetParameter(Name="P35")
+designPoint4.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="0.00025")
+designPoint5.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="0.00025")
+designPoint6.SetParameterExpression(
+    Parameter=parameter4,
+    Expression="0.00025")
+Parameters.OptimizeUpdateOrder()
+designPoint4.Retained = False
+Save(Overwrite=True)
+Save(Overwrite=True)

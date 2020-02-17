@@ -1,0 +1,48 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+geometry1.Exit()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+designPoint1.Retained = False
+designPoint2 = Parameters.GetDesignPoint(Name="1")
+designPoint2.Retained = False
+designPoint3 = Parameters.GetDesignPoint(Name="2")
+designPoint3.Retained = False
+designPoint4 = Parameters.GetDesignPoint(Name="3")
+designPoint4.Retained = False
+designPoint1.Retained = True
+Parameters.SetBaseDesignPoint(DesignPoint=designPoint1)
+designPoint5 = Parameters.GetDesignPoint(Name="4")
+designPoint5.Retained = False
+modelComponent1.Refresh()
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+parameter1 = Parameters.GetParameter(Name="P25")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="10 [W m^-2 C^-1]")
+Parameters.ExportAllDesignPointsData(FilePath="C:/Users/gfirest/Desktop/dlkajs.csv")
+Update()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+model1.Edit()
+geometry1.Edit()
+geometry1.Exit()
+modelComponent1.Refresh()
+model1.Edit()
+Save(Overwrite=True)
+model1.Exit()
+Save(Overwrite=True)

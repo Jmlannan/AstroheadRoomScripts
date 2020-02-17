@@ -1,0 +1,26 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+material1 = engineeringData1.GetMaterial(Name="Epoxy")
+matlProp1 = material1.GetProperty(Name="Thermal Conductivity")
+matlProp1.SetData(
+    Variables=["Thermal Conductivity"],
+    Values=[["1.4 [W m^-1 C^-1]"]])
+designPoint1 = Parameters.GetDesignPoint(Name="0")
+parameter1 = Parameters.GetParameter(Name="P47")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="1.4 [W m^-1 C^-1]")
+parameter2 = Parameters.GetParameter(Name="P38")
+designPoint1.SetParameterExpression(
+    Parameter=parameter2,
+    Expression="0.2")
+system2 = GetSystem(Name="APDL")
+setup1 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile1.Delete()
+Save(Overwrite=True)

@@ -1,0 +1,83 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+template1 = GetTemplate(TemplateName="External Data")
+system2 = template1.CreateSystem()
+setup1 = system2.GetContainer(ComponentName="Setup")
+externalLoadFileData1 = setup1.AddDataFile(FilePath="C:/Users/gfirest/Desktop/Sheet2.csv")
+externalLoadFileDataProperty1 = externalLoadFileData1.GetDataProperty()
+externalLoadColumnData1 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData1,
+    DataType="X Coordinate")
+externalLoadColumnData2 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData 1")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData2,
+    DataType="Y Coordinate")
+externalLoadColumnData3 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData 2")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData3,
+    DataType="Z Coordinate")
+externalLoadColumnData4 = externalLoadFileDataProperty1.GetColumnData(Name="ExternalLoadColumnData 3")
+externalLoadFileDataProperty1.SetColumnDataType(
+    ColumnData=externalLoadColumnData4,
+    DataType="Heat Generation")
+externalLoadFileDataProperty1.OriginY = 0
+externalLoadFileDataProperty1.OriginYUnit = "mm"
+externalLoadFileDataProperty1.OriginY = 0
+externalLoadFileDataProperty1.OriginYUnit = "m"
+externalLoadFileDataProperty1.OriginZ = 0
+externalLoadFileDataProperty1.OriginZUnit = "mm"
+externalLoadFileDataProperty1.OriginZ = 0.5
+setupComponent1 = system2.GetComponent(Name="Setup")
+setupComponent2 = system1.GetComponent(Name="Setup")
+setupComponent1.TransferData(TargetComponent=setupComponent2)
+Save(Overwrite=True)
+Save(Overwrite=True)
+setup2 = system1.GetContainer(ComponentName="Setup")
+setup2.Edit()
+modelComponent1 = system1.GetComponent(Name="Model")
+setupComponent1.TransferData(TargetComponent=modelComponent1)
+setupComponent1.DeleteTransfer(TargetComponent=modelComponent1)
+setupComponent2.Refresh()
+Save(Overwrite=True)
+Save(Overwrite=True)
+externalLoadColumnData4.Unit = "W cm^-3"
+setupComponent2.Update(AllDependencies=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+designPoint1 = Parameters.CreateDesignPoint()
+parameter1 = Parameters.GetParameter(Name="P3")
+designPoint1.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="20 [W m^-2 C^-1]")
+designPoint2 = Parameters.CreateDesignPoint()
+designPoint2.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="15 [W m^-2 C^-1]")
+designPoint3 = Parameters.CreateDesignPoint()
+designPoint3.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="10 [W m^-2 C^-1]")
+designPoint4 = Parameters.CreateDesignPoint()
+designPoint4.SetParameterExpression(
+    Parameter=parameter1,
+    Expression="5 [W m^-2 C^-1]")
+designPoint1.Retained = True
+designPoint2.Retained = True
+designPoint3.Retained = True
+designPoint4.Retained = True
+chart1 = Parameters.CreateParameterSummaryChart(Parameters=[])
+chart2 = Parameters.CreateParameterVsParameterChart()
+designPoint1.Retained = True
+designPoint2.Retained = True
+designPoint3.Retained = True
+designPoint4.Retained = True
+Refresh()
+Update()
+Save(Overwrite=True)

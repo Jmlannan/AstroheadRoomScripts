@@ -1,0 +1,80 @@
+﻿# encoding: utf-8
+# Release 16.1
+SetScriptVersion(Version="16.1.91")
+system1 = GetSystem(Name="SYS")
+results1 = system1.GetContainer(ComponentName="Results")
+results1.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+system2 = GetSystem(Name="APDL")
+setupComponent1 = system2.GetComponent(Name="Setup")
+setupComponent1.Update(AllDependencies=True)
+setup1 = system2.GetContainer(ComponentName="Setup")
+mapdlInputFile1 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/dp0/SYS/MECH/ds.dat")
+mapdlInputFile2 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTA.mac")
+setupComponent1.Update(AllDependencies=True)
+setupComponent1.Update(AllDependencies=True)
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Exit()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=False)
+setup1.Exit()
+setupComponent1.Update(AllDependencies=True)
+entity1 = setup1.AddFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/dp0/SYS/MECH/file.db")
+setupComponent1.Update(AllDependencies=True)
+setupComponent1.Clean()
+entity1.Delete()
+mapdlInputFile1.Delete()
+mapdlInputFile2.Delete()
+solution1 = system1.GetContainer(ComponentName="Solution")
+solution1.Edit()
+setupComponent1.Update(AllDependencies=True)
+model1.Exit()
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+mapdlInputFile3 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTA.mac")
+mapdlInputFile4 = setup1.GetMapdlInputFile(Name="InputFile 1")
+mapdlInputFile4.Delete()
+mapdlInputFile3.Delete()
+mapdlInputFile5 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTA.mac")
+setup1.Exit()
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+mapdlInputFile6 = setup1.GetMapdlInputFile(Name="InputFile")
+mapdlInputFile6.Delete()
+mapdlInputFile5.Delete()
+mapdlInputFile7 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/dp0/SYS/MECH/ds.dat")
+mapdlInputFile8 = setup1.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTA.mac")
+setupComponent1.Refresh()
+setup1.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup1.Exit()
+system2.Delete()
+template1 = GetTemplate(TemplateName="Mechanical APDL")
+solutionComponent1 = system1.GetComponent(Name="Solution")
+componentTemplate1 = GetComponentTemplate(Name="ANSYSSetupCellTemplate")
+system3 = template1.CreateSystem(
+    DataTransferFrom=[Set(FromComponent=solutionComponent1, TransferName=None, ToComponentTemplate=componentTemplate1)],
+    Position="Right",
+    RelativeTo=system1)
+setup2 = system3.GetContainer(ComponentName="Setup")
+mapdlInputFile9 = setup2.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/dp0/SYS/MECH/ds.dat")
+Refresh()
+Refresh()
+solutionComponent1.Update(AllDependencies=True)
+setupComponent2 = system3.GetComponent(Name="Setup")
+setupComponent2.Refresh()
+setup2.Edit(
+    Interactive=True,
+    LoadInputFiles=True)
+setup2.Exit()
+mapdlInputFile10 = setup2.AddInputFile(FilePath="C:/Users/gfirest/Desktop/One Layer/wb1vcl_onelayer_files/outpathTA.mac")
+setupComponent2.Update(AllDependencies=True)
+Save(Overwrite=True)
